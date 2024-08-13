@@ -15,11 +15,29 @@ datasource db {
 
 model Activity{
   id  Int @id @default(autoincrement())
-  category String
+  //category String
   startedAt DateTime @default(now()) @db.Timestamptz(3)
   finishedAt DateTime?
   duration Int
   durationWithOvertime Int?
   successful Boolean?
+  createdBy User @relation(fields: [createdById], references: [id])
+  createdById Int
 }
 
+model User{
+  id Int @id @default(autoincrement())
+  username String 
+  email String @unique
+  password String  
+  activities Activity[]
+}
+
+
+//enum category {
+//  STUDY
+//  REST
+//  SPORT
+//  WORK
+//  OTHER
+//}

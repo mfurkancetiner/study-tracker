@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Activity" ALTER COLUMN "startedAt" SET DATA TYPE TIMESTAMP(3);

@@ -1,0 +1,267 @@
+* {
+  box-sizing: border-box;
+}
+
+ul{
+  height:130px;
+  width: 90%;}
+ul{
+  overflow:hidden; overflow-y:scroll;
+}
+
+ul::-webkit-scrollbar{
+  padding: 10px;
+  
+}
+
+.day li{
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.day {
+  width: 28%;
+  height: 20%;
+  margin: 1%;
+  border: 1px solid #973030; 
+  border-radius: 2px; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  text-align: center;
+  background-color: #d68484;
+  color: #110505;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 1.1rem; 
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.day:hover {
+  transform: translateY(-5px); 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+}
+
+.day:active {
+  transform: translateY(0); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+
+h1{
+  margin: 10px;
+}
+
+h2{
+ 
+  margin: 10px;
+}
+
+.days{
+  display: flex;
+  justify-content: center;
+  gap: 1%
+}
+
+body{
+  background-color: rgb(224, 215, 197);
+  margin: 0;
+}
+.button {
+  background-color: #d1d6f0; 
+  color: #333; 
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: 0.5px solid #333; 
+  border-radius: 5px; 
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
+}
+
+.button:hover {
+  background-color: #bcc2e0; 
+  transform: translateY(-5px); 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+}
+
+.button:active {
+  background-color: #a8aed1; 
+  transform: translateY(0); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.button:focus {
+  outline: none; 
+  box-shadow: 0 0 0 3px rgba(209, 214, 240, 0.5); 
+}
+
+.button-container {
+  position: fixed;
+  bottom: 20px; 
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between; 
+  padding: 0 20px; 
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.container {
+  margin: 1rem;
+  text-align: center;
+}
+
+.nav {
+  background-color: #a54343;
+  color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+.site-title {
+  font-size: 2rem;
+}
+
+.nav ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.nav a {
+  color: inherit;
+  text-decoration: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: .25rem;
+  font-size: 2rem;
+}
+
+.nav li.active {
+  background-color: #a03c3c;
+}
+
+.nav li:hover {
+  background-color: #992121;
+}
+
+.stopwatch{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  height: 100%;
+  padding: 30px;
+}
+
+
+
+.display{
+  font-family:'digital-clock-font, Courier New', Courier, monospace;
+  margin: 3%;
+  font-size: 8vw;
+}
+
+
+.controls button{
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  margin: 5px;
+  min-width: 125px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.5s ease;   
+}
+
+.start-button{
+  background-color: rgb(241, 116, 116);
+}
+
+.start-button:hover{
+  background-color: rgb(243, 82, 82);
+}
+
+
+
+.cancel-button{
+  background-color: rgb(241, 116, 116);
+}
+
+.cancel-button:hover{
+  background-color: rgb(243, 82, 82);
+}
+
+input[type="range"] {
+  position: relative;
+  transform: scale(1); 
+  transform-origin: 0 0;
+  -webkit-appearance: none;
+  margin-top: 0px;
+  margin-bottom: 50px;
+  width: 100%; 
+  width: 500px;
+  max-width: 300px;
+  height: 8px; 
+  background: #411212; 
+  border-radius: 5px; 
+  outline: none; 
+  opacity: 0.7; 
+  transition: opacity 0.2s;
+}
+
+input[type="range"]:hover {
+  opacity: 1; 
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; 
+  appearance: none; 
+  width: 20px;
+  height: 20px; 
+  background: #4CAF50; 
+  cursor: pointer; 
+  border-radius: 50%;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5); 
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #4CAF50;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+input[type="range"]::-ms-thumb {
+  width: 20px;
+  height: 20px;
+  background: #4CAF50;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+.warning-button{
+  background-color: #83d491;
+}

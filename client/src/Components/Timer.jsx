@@ -53,7 +53,7 @@ export default function Timer(){
         minutes = String(minutes).padStart(2, "0")
         seconds = String(seconds).padStart(2, "0")
 
-        if(minutes === "00" && seconds === "00" ){
+        if(minutes === "-1" ){
             handleSetRunningFalse()
             endSuccess()
         }
@@ -63,7 +63,7 @@ export default function Timer(){
     }
 
     async function endSuccess(){
-        
+
         try{
             const res = await axios.patch(`http://localhost:3000/api/activity/${currentActivityId.current}`, {
                 finishedAt: new Date(),
@@ -78,7 +78,6 @@ export default function Timer(){
     }
 
     function handleSetRunningFalse(){
-        console.log("aaaaaaaa")
         setElapsedTime(0)
         setIsRunning(false)
     }

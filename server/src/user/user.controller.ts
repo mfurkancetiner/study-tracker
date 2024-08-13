@@ -1,15 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Prisma } from '@prisma/client';
 
-@Controller('user')
+@Controller('auth')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: Prisma.UserCreateInput) {
-    return this.userService.create(createUserDto);
+  @Post('/register')
+  async register(@Body() createUserDto: Prisma.UserCreateInput) {
+    return this.userService.register(createUserDto);
   }
+
+  @Post('/login')
+  async login(@Body() createUserDto: Prisma.UserCreateInput){
+    return this.userService.login(createUserDto)
+  } 
 
   @Get()
   findAll() {
@@ -21,9 +26,14 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: Prisma.UserUpdateInput) {
-    return this.userService.update(+id, updateUserDto);
+  @Patch('/updateEmail/:id')
+  updateEmail(@Param('id') id: string, @Body() updateUserDto: Prisma.UserUpdateInput) {
+    return this.userService.updateEmail(+id, String(updateUserDto.email));
+  }
+
+  @Patch('/updatePassword/:id')
+  updatePassword(@Param('id') id: string, @Body() updateUserDto: Prisma.UserUpdateInput) {
+    return this.userService.updatePassword(+id, String(updateUserDto.password));
   }
 
   @Delete(':id')

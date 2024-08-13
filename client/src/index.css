@@ -215,7 +215,7 @@ input[type="range"] {
   position: relative;
   transform: scale(1); 
   transform-origin: 0 0;
-  -webkit-appearance: none;
+  appearance: none;
   margin-top: 0px;
   margin-bottom: 50px;
   width: 100%; 

@@ -2,6 +2,8 @@ import { BadRequestException, Injectable, NotFoundException, UnauthorizedExcepti
 import { DatabaseService } from 'src/database/database.service';
 import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken'
+
 
 @Injectable()
 export class UserService {
@@ -27,6 +29,16 @@ export class UserService {
     return false
   }
 
+  createJWT(id:number, email: string){
+    return jwt.sign({
+      userId: id,
+      email: email},
+      "jwtSecret", 
+      {
+        expiresIn: '30d'        
+      })
+  }
+
   async register(createUserDto: Prisma.UserCreateInput) {
     if(!this.isEmailValid(createUserDto.email))
       throw new BadRequestException('Invalid Email')
@@ -40,10 +52,16 @@ export class UserService {
     const saltRounds = 10;
     const hash = await bcrypt.hash(createUserDto.password, saltRounds);
     createUserDto.password = hash
-
-    return this.databaseService.user.create({
+    
+    const user = await this.databaseService.user.create({
         data: createUserDto
       })
+
+    const token = this.createJWT(user.id, user.email)
+    return({
+      user, token 
+    })
+    
   }
 
   async login(updateUserDto: Prisma.UserCreateInput){
@@ -56,15 +74,17 @@ export class UserService {
 
     if(!user)
       throw new NotFoundException(`No user found with email ${userEmail}`) 
-    
+
     const isMatch = await bcrypt.compare(updateUserDto.password, user.password);
     if(!isMatch){
       throw new UnauthorizedException('Password invalid')
     }
 
-    return{
-     user
-    }
+    const token = this.createJWT(user.id, user.email)
+
+    return({
+      user, token
+    })
 
   }
 

@@ -1,21 +1,37 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Scope } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { Prisma } from '@prisma/client';
+import { Request } from 'express';
+import { UserService } from 'src/auth/auth.service';
 
-@Injectable()
+
+declare module 'express' {
+  interface Request {
+    user?: {
+      userId: number;
+      email: string
+      // Add other properties if needed
+    };
+  }
+}
+
+@Injectable({ scope: Scope.REQUEST })
 export class ActivityService {
 
-  constructor(private readonly databaseService: DatabaseService) { }
+  constructor(private readonly databaseService: DatabaseService, private readonly userService: UserService) { }
 
-  async create(createActivityDto: Prisma.ActivityCreateInput) {
+  async create(createActivityDto: Prisma.ActivityCreateInput, req: Request) {
+    createActivityDto.createdBy = {
+      connect: { id: req.user.userId }
+    };
     return this.databaseService.activity.create({
       data: createActivityDto
     })
   }
 
-  async findAll(category?: string, startDate?: Date, finishDate?: Date) {
+  async findAll(req: Request, category?: string, startDate?: Date, finishDate?: Date) {
     const where: any = {
-
+      createdById: req.user.userId
     }
     if(category){
       where.category = category
@@ -32,10 +48,11 @@ export class ActivityService {
   }
 
 
-  async findOne(id: number) {
+  async findOne(id: number, req: Request) {
     const activity = await this.databaseService.activity.findUnique({
       where: {
-        id: id
+        id: id,
+        createdById: req.user.userId
       }
     })
     if(!activity)
@@ -44,18 +61,20 @@ export class ActivityService {
 
   }
 
-  async update(id: number, updateActivityDto: Prisma.ActivityUpdateInput) {
+  async update(id: number, updateActivityDto: Prisma.ActivityUpdateInput, req: Request) {
     const activity = await this.databaseService.activity.update({
       where: {
         id: id,
+        createdById: req.user.userId
       },
       data: updateActivityDto,
     })
     return activity
   }
 
-  async stopActivity(id: number){
-    let activity = await this.databaseService.activity.findUnique({where: {id}})
+  async stopActivity(id: number, req: Request){
+    
+    let activity = await this.findOne(id, req)
     const minsSinceStart = Math.ceil((new Date().getTime() - new Date(activity.startedAt).getTime()) / 60000)
     const data: any = { finishedAt: new Date(), durationWithOvertime: minsSinceStart }
     if(activity){
@@ -74,13 +93,18 @@ export class ActivityService {
 
   }
 
-  async remove(id: number) {
-    const activity = await this.databaseService.activity.delete({
-      where: {
-        id: id,
-      }
-    })
-    
-    return activity
+  async remove(id: number, req: Request) {
+    try{
+      const activity = await this.databaseService.activity.delete({
+        where: {
+          id: id,
+          createdById: req.user.userId
+        }
+      })
+      return(activity)
+    }
+    catch(error){
+      throw new NotFoundException(`Activity with id ${id} not found`)
+    }
   }
 }

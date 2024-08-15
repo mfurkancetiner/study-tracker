@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UserService } from './auth.service';
 import { Prisma } from '@prisma/client';
 
 @Controller('auth')

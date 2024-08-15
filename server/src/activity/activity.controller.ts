@@ -1,38 +1,39 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Headers, Req } from '@nestjs/common';
 import { ActivityService } from './activity.service';
 import { Prisma } from '@prisma/client';
+import { Request } from 'express';
 
 @Controller('activity')
 export class ActivityController {
   constructor(private readonly activityService: ActivityService) {}
 
   @Post()
-  create(@Body() createActivityDto: Prisma.ActivityCreateInput) {
-    return this.activityService.create(createActivityDto);
+  create(@Body() createActivityDto: Prisma.ActivityCreateInput, @Req() req: Request) {
+    return this.activityService.create(createActivityDto, req);
   }
 
   @Get()
-  findAll(@Query('c') category?: string, @Query('st') startDate?: Date, @Query('fn') finishDate?: Date ) {
-    return this.activityService.findAll(category, startDate, finishDate);
+  findAll( @Req() req: Request, @Query('c') category?: string, @Query('st') startDate?: Date, @Query('fn') finishDate?: Date ) {
+    return this.activityService.findAll(req, category, startDate, finishDate);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.activityService.findOne(+id);
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    return this.activityService.findOne(+id, req);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateActivityDto: Prisma.ActivityUpdateInput) {
-    return this.activityService.update(+id, updateActivityDto);
+  update(@Param('id') id: string, @Body() updateActivityDto: Prisma.ActivityUpdateInput, @Req() req: Request) {
+    return this.activityService.update(+id, updateActivityDto, req);
   }
 
   @Patch(':id/stop')
-  stopActivity(@Param('id') id: string){
-    return this.activityService.stopActivity(+id)
+  stopActivity(@Param('id') id: string, @Req() req: Request){
+    return this.activityService.stopActivity(+id, req)
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.activityService.remove(+id);
+  remove(@Param('id') id: string, @Req() req: Request) {
+    return this.activityService.remove(+id, req);
   }
 }

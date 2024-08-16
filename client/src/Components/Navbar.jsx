@@ -4,10 +4,10 @@ function Navbar(){
     return(
         <>
             <nav className="nav">
-                <a href="/" className="site-title">Study Tracker</a>
+                <h4 className="site-title">Study Tracker</h4>
                 <ul>
                     <li className="active">
-                        <a href="/">Home</a>
+                        <a href="/study">Study</a>
                     
                     </li>
                     <li className="active">
@@ -17,6 +17,10 @@ function Navbar(){
                         <a href="/about">About</a>
                     </li>
                 </ul>
+                <p>Logged user: {sessionStorage.getItem('user')}</p>
+                <p className="logout">
+                    <a href="/">Logout</a>
+                </p>
 
             </nav>
         </>

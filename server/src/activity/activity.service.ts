@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, Scope } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, Scope } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { Prisma } from '@prisma/client';
 import { Request } from 'express';
@@ -29,19 +29,16 @@ export class ActivityService {
     })
   }
 
-  async findAll(req: Request, category?: string, startDate?: Date, finishDate?: Date) {
+  async findAll(req: Request, finishDate?: Date) {
     const where: any = {
       createdById: req.user.userId
     }
-    if(category){
-      where.category = category
+    if(!finishDate){
+      finishDate = new Date("2100-01-01T12:10:30.318Z")
     }
-    if(startDate){
-      where.startedAt = { gte: startDate } 
-    }
-    if(finishDate){
-      where.finishedAt = { lte: finishDate } 
-    }
+    
+    where.finishedAt = { lte: finishDate } 
+    
     return this.databaseService.activity.findMany({
       where: where
     })
@@ -58,53 +55,54 @@ export class ActivityService {
     if(!activity)
       throw new NotFoundException(`Activity with id ${id} not found`)
     return activity
-
   }
 
   async update(id: number, updateActivityDto: Prisma.ActivityUpdateInput, req: Request) {
-    const activity = await this.databaseService.activity.update({
+    const activity = await this.findOne(id, req)
+    if(!activity)
+      throw new NotFoundException(`Activity with id ${id} not found`)
+    const updated = await this.databaseService.activity.update({
       where: {
         id: id,
         createdById: req.user.userId
       },
       data: updateActivityDto,
     })
-    return activity
+    return updated
   }
 
   async stopActivity(id: number, req: Request){
     
-    let activity = await this.findOne(id, req)
-    const minsSinceStart = Math.ceil((new Date().getTime() - new Date(activity.startedAt).getTime()) / 60000)
-    const data: any = { finishedAt: new Date(), durationWithOvertime: minsSinceStart }
-    if(activity){
-      data.successful = Math.ceil((new Date(data.finishedAt).getTime() - new Date(activity.startedAt).getTime()) / 60000) > activity.duration ? true : false
-    }
-    else{
+    const activity = await this.findOne(id, req)
+    if(!activity){
       throw new NotFoundException(`Activity with id ${id} not found`)
     }
+    if(activity.finishedAt){
+      throw new BadRequestException('Activity already stopped')
+    }
+    const minsSinceStart = Math.ceil((new Date().getTime() - new Date(activity.startedAt).getTime()) / 60000)
+    const data: any = { finishedAt: new Date(), durationWithOvertime: minsSinceStart }
+    data.successful = Math.ceil((new Date(data.finishedAt).getTime() - new Date(activity.startedAt).getTime()) / 60000) > activity.duration ? true : false
 
-    activity = await this.databaseService.activity.update({
+    const stopped = await this.databaseService.activity.update({
       where: {id},
       data: data
     })
-
-    return activity
-
+    return stopped
   }
 
   async remove(id: number, req: Request) {
-    try{
-      const activity = await this.databaseService.activity.delete({
+    const activity = await this.findOne(id, req)
+    if(!activity)
+      throw new NotFoundException(`Activity with id ${id} not found`)
+   
+      const deleted = await this.databaseService.activity.delete({
         where: {
           id: id,
           createdById: req.user.userId
         }
       })
       return(activity)
-    }
-    catch(error){
-      throw new NotFoundException(`Activity with id ${id} not found`)
-    }
+   
   }
 }

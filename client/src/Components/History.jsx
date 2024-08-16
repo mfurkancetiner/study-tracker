@@ -13,7 +13,11 @@ function History() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/activity');
+        const response = await axios.get('http://localhost:3000/api/v1/activity', {
+          headers: {
+            authorization: `Bearer ${sessionStorage.getItem('token')}`
+          }
+        });
         setData(response.data);
       } catch (err) {
         setError(err.message);
@@ -27,6 +31,11 @@ function History() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
+
+  if(data.length === 0){
+    return(<p className='no-sessions-message'>No history yet. Click on 'Study' to start a study session and when you're finished it will show up here. Or if you want 
+    to check out how this would've looked with data, log in as guest.</p>)
+  }
 
   const recordWithEarliestDate = data.reduce((earliest, current) => {
     return new Date(current.startedAt) < new Date(earliest.startedAt) ? current : earliest;

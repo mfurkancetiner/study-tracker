@@ -79,7 +79,7 @@ body{
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
+  font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif; 
 }
 
 .button:hover {
@@ -133,7 +133,13 @@ body {
 }
 
 .site-title {
-  font-size: 2rem;
+  font-size: 1.5rem;
+}
+
+.nav .logout{
+  margin-left: auto !important;
+  height: 100%;
+  font-size: 1rem !important;
 }
 
 .nav ul {
@@ -159,6 +165,14 @@ body {
 }
 
 .nav li:hover {
+  background-color: #992121;
+}
+
+.logout:active{
+  background-color: #a03c3c;
+}
+
+.logout:hover{
   background-color: #992121;
 }
 
@@ -264,4 +278,26 @@ input[type="range"]::-ms-thumb {
 
 .warning-button{
   background-color: #83d491;
+}
+
+.no-sessions-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh; 
+  font-size: 1.5rem; 
+  color: #666; 
+  text-align: center;
+  padding: 0 1rem; 
+  margin-left: 25%;
+  margin-top: 3%;
+  margin-right: 25%;
+}
+
+.no-sessions-message p {
+  margin: 0;
+  max-width: 300px; 
+  overflow-wrap: break-word; 
+  box-sizing: border-box; 
+
 }

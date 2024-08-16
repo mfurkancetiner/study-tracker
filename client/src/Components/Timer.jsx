@@ -32,11 +32,19 @@ export default function Timer(){
         startTimeRef.current = now - elapsedTime;
 
         try{
-            const res = await axios.post('http://localhost:3000/api/activity', {
-                category: "Study",
-                startedAt: now.toISOString(),
-                duration: parseInt(duration)
-            })
+            const res = await axios.post(
+                'http://localhost:3000/api/v1/activity',
+                {
+                    startedAt: now.toISOString(),
+                    duration: parseInt(duration)
+                },
+                {
+                    headers: {
+                        authorization: `Bearer ${sessionStorage.getItem('token')}`
+                    }
+                }
+            );
+            
             currentActivityId.current = res.data.id
         }
         catch(error){
@@ -65,11 +73,18 @@ export default function Timer(){
     async function endSuccess(){
 
         try{
-            const res = await axios.patch(`http://localhost:3000/api/activity/${currentActivityId.current}`, {
-                finishedAt: new Date(),
-                successful: true,
-                durationWithOvertime: parseInt(duration)
-            })
+            const res = await axios.patch(`http://localhost:3000/api/v1/activity/${currentActivityId.current}`, 
+                {
+                    finishedAt: new Date(),
+                    successful: true,
+                    durationWithOvertime: parseInt(duration),
+                },
+                {
+                    headers: {
+                        authorization: `Bearer ${sessionStorage.getItem('token')}`
+                    }
+                }
+            )
             console.log(res.data)
         }
         catch(error){
@@ -92,11 +107,17 @@ export default function Timer(){
         setIsRunning(false)
 
         try{
-            const res = await axios.patch(`http://localhost:3000/api/activity/${currentActivityId.current}`, {
-                successful: false,
-                finishedAt: new Date(),
-                durationWithOvertime: Math.floor(elapsedTime / (1000 * 60) % 60)
-            })
+            const res = await axios.patch(`http://localhost:3000/api/v1/activity/${currentActivityId.current}`, 
+                {
+                    successful: false,
+                    finishedAt: new Date(),
+                    durationWithOvertime: Math.floor(elapsedTime / (1000 * 60) % 60)},
+                {
+                    headers: {
+                        authorization: `Bearer ${sessionStorage.getItem('token')}`
+                    }
+                }
+            )
         }
         catch(error){
             console.log(error)

@@ -13,8 +13,8 @@ export class ActivityController {
   }
 
   @Get()
-  findAll( @Req() req: Request, @Query('c') category?: string, @Query('st') startDate?: Date, @Query('fn') finishDate?: Date ) {
-    return this.activityService.findAll(req, category, startDate, finishDate);
+  findAll( @Req() req: Request, @Query('fn') finishDate?: Date ) {
+    return this.activityService.findAll(req);
   }
 
   @Get(':id')

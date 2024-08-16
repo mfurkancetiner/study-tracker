@@ -14,11 +14,14 @@ function Day(props){
     const dayOfMonth = _.getDate()
 
     const getHoursandMins = (it) => {
+
+      /* minutes = String(minutes).padStart(2, "0")
+        seconds = String(seconds).padStart(2, "0") */
         
-        const startHour = new Date(it.startedAt).getHours()
-        const startMin = new Date(it.startedAt).getMinutes()
-        const finishHour = new Date(it.finishedAt).getHours()
-        const finishMin = new Date(it.finishedAt).getMinutes()
+        const startHour = String(new Date(it.startedAt).getHours()).padStart(2,"0")
+        const startMin = String(new Date(it.startedAt).getMinutes()).padStart(2,"0")
+        const finishHour = String(new Date(it.finishedAt).getHours()).padStart(2,"0")
+        const finishMin = String(new Date(it.finishedAt).getMinutes()).padStart(2,"0")
 
         return `${startHour}:${startMin}-${finishHour}:${finishMin}`
     }
@@ -33,7 +36,7 @@ function Day(props){
       <h1>Timeline</h1>
       <ul>
         {props.activitiesByDay.map(item => (
-          <li style={{ listStyleType: "none"}} key={item.id}>Time: {getHoursandMins(item)} <br></br> Status: {item.successful ? "successful" : "not successful"} Duration: {item.duration.toString()} minutes</li>
+          <li style={{ listStyleType: "none"}} key={item.id}>Time: {getHoursandMins(item)} <br></br> Status: {item.successful ? "successful" : "not successful"} Set Duration: {item.duration.toString()} minutes</li>
           
         ))}
       </ul>

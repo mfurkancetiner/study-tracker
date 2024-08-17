@@ -13,7 +13,7 @@ function History() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/v1/activity', {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}api/v1/activity`, {
           headers: {
             authorization: `Bearer ${sessionStorage.getItem('token')}`
           }

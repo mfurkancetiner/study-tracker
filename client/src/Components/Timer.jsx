@@ -33,7 +33,7 @@ export default function Timer(){
 
         try{
             const res = await axios.post(
-                'http://localhost:3000/api/v1/activity',
+                `${process.env.url}/api/v1/activity`,
                 {
                     startedAt: now.toISOString(),
                     duration: parseInt(duration)
@@ -73,7 +73,7 @@ export default function Timer(){
     async function endSuccess(){
 
         try{
-            const res = await axios.patch(`http://localhost:3000/api/v1/activity/${currentActivityId.current}`, 
+            const res = await axios.patch(`${import.meta.env.VITE_API_URL}api/v1/activity/${currentActivityId.current}`, 
                 {
                     finishedAt: new Date(),
                     successful: true,
@@ -107,7 +107,7 @@ export default function Timer(){
         setIsRunning(false)
 
         try{
-            const res = await axios.patch(`http://localhost:3000/api/v1/activity/${currentActivityId.current}`, 
+            const res = await axios.patch(`${import.meta.env.VITE_API_URL}api/v1/activity/${currentActivityId.current}`, 
                 {
                     successful: false,
                     finishedAt: new Date(),

@@ -55,7 +55,7 @@ const AuthPage = () => {
   const loginAPI = async (email, password) => {
     setEnteredInvalidCred(false)
     try{
-        const res = await axios.post('http://localhost:3000/api/v1/auth/login', {
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}api/v1/auth/login`, {
             email: email,
             password: password
         })
@@ -71,7 +71,7 @@ const AuthPage = () => {
 
   const signupAPI = async (user, email, password) => {
     try{
-      const res = await axios.post('http://localhost:3000/api/v1/auth/register', {
+      const res = await axios.post(`${process.env.VITE_API_URL}api/v1/auth/register`, {
           username: user,
           email: email,
           password: password

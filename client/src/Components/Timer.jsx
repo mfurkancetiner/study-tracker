@@ -33,7 +33,7 @@ export default function Timer(){
 
         try{
             const res = await axios.post(
-                `${process.env.url}/api/v1/activity`,
+                `${import.meta.env.VITE_API_URL}api/v1/activity`,
                 {
                     startedAt: now.toISOString(),
                     duration: parseInt(duration)
@@ -44,6 +44,7 @@ export default function Timer(){
                     }
                 }
             );
+
             
             currentActivityId.current = res.data.id
         }
